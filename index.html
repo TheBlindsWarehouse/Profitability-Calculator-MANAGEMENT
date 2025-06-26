@@ -426,49 +426,13 @@
                 </div>
             </div>
             
-            <button class="calculate-btn" onclick="calculateMaxDiscount()">Calculate Maximum Discount</button>
+            <button class="calculate-btn" onclick="calculateMaxDiscount()">Calculate</button>
         </div>
         
         <div id="results" class="results" style="display: none;">
             <h2>Discount Analysis for <span id="productName">Product</span></h2>
             
             <div class="results-grid">
-                <div class="discount-card" id="discountCard">
-                    <div class="card-title" id="discountCardTitle">Break-Even Point</div>
-                    <div class="main-figure" id="finalPrice">£0.00</div>
-                    <div class="sub-figure" id="discountCardSubtitle">Customer Pays (Max <span id="discountPercentage">0%</span> discount) Inc VAT</div>
-                    <div class="price-summary">
-                        <div class="price-line">
-                            <span>Order value (Ex VAT):</span>
-                            <span id="orderValueDiscountedExVAT">£0.00</span>
-                        </div>
-                        <div class="price-line">
-                            <span>Product cost (Ex VAT):</span>
-                            <span id="costOfSalesDiscounted">-£0.00</span>
-                        </div>
-                        <div class="price-line">
-                            <span>Sales commission (5% Ex VAT):</span>
-                            <span id="commissionAmountDiscounted">-£0.00</span>
-                        </div>
-                        <div class="price-line subtotal">
-                            <span>Gross profit:</span>
-                            <span id="grossProfitDiscounted">£0.00</span>
-                        </div>
-                        <div class="price-line">
-                            <span>Variable fitting costs:</span>
-                            <span id="variableFittingDiscounted">-£80.00</span>
-                        </div>
-                        <div class="price-line">
-                            <span>Fixed overheads per order:</span>
-                            <span id="fixedOverheadsDiscounted">-£380.00</span>
-                        </div>
-                        <div class="price-line">
-                            <span id="profitLabel">Net profit:</span>
-                            <span id="finalProfit">£0.00</span>
-                        </div>
-                    </div>
-                </div>
-                
                 <div class="profit-card">
                     <div class="card-title">Original Order (No Discount)</div>
                     <div class="main-figure" id="originalPrice">£0.00</div>
@@ -501,6 +465,42 @@
                         <div class="price-line">
                             <span>Net profit:</span>
                             <span id="actualNetProfit">£0.00</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="discount-card" id="discountCard">
+                    <div class="card-title" id="discountCardTitle">Break-Even Point</div>
+                    <div class="main-figure" id="finalPrice">£0.00</div>
+                    <div class="sub-figure" id="discountCardSubtitle">Customer Pays (Max <span id="discountPercentage">0%</span> discount) Inc VAT</div>
+                    <div class="price-summary">
+                        <div class="price-line">
+                            <span>Order value (Ex VAT):</span>
+                            <span id="orderValueDiscountedExVAT">£0.00</span>
+                        </div>
+                        <div class="price-line">
+                            <span>Product cost (Ex VAT):</span>
+                            <span id="costOfSalesDiscounted">-£0.00</span>
+                        </div>
+                        <div class="price-line">
+                            <span>Sales commission (5% Ex VAT):</span>
+                            <span id="commissionAmountDiscounted">-£0.00</span>
+                        </div>
+                        <div class="price-line subtotal">
+                            <span>Gross profit:</span>
+                            <span id="grossProfitDiscounted">£0.00</span>
+                        </div>
+                        <div class="price-line">
+                            <span>Variable fitting costs:</span>
+                            <span id="variableFittingDiscounted">-£80.00</span>
+                        </div>
+                        <div class="price-line">
+                            <span>Fixed overheads per order:</span>
+                            <span id="fixedOverheadsDiscounted">-£380.00</span>
+                        </div>
+                        <div class="price-line">
+                            <span id="profitLabel">Net profit:</span>
+                            <span id="finalProfit">£0.00</span>
                         </div>
                     </div>
                 </div>
