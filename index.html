@@ -198,6 +198,17 @@
             font-size: 0.9em;
         }
         
+        .price-line.subtotal {
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
+            padding-top: 8px;
+            margin-top: 8px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.1);
+            padding-left: 8px;
+            padding-right: 8px;
+            border-radius: 4px;
+        }
+        
         .price-line:last-child {
             margin-bottom: 0;
             border-top: 1px solid rgba(255, 255, 255, 0.5);
@@ -439,6 +450,10 @@
                             <span>Sales commission (5% Ex VAT):</span>
                             <span id="commissionAmountDiscounted">-£0.00</span>
                         </div>
+                        <div class="price-line subtotal">
+                            <span>Gross profit:</span>
+                            <span id="grossProfitDiscounted">£0.00</span>
+                        </div>
                         <div class="price-line">
                             <span>Variable fitting costs:</span>
                             <span id="variableFittingDiscounted">-£80.00</span>
@@ -470,6 +485,10 @@
                         <div class="price-line">
                             <span>Sales commission (5% Ex VAT):</span>
                             <span id="commissionAmount">-£0.00</span>
+                        </div>
+                        <div class="price-line subtotal">
+                            <span>Gross profit:</span>
+                            <span id="grossProfitOriginal">£0.00</span>
                         </div>
                         <div class="price-line">
                             <span>Variable fitting costs:</span>
@@ -606,12 +625,17 @@
             // Update product name
             document.getElementById('productName').textContent = productName;
             
+            // Calculate gross profits
+            const grossProfitOriginal = sellingPriceExVAT - costOfSales - commissionAmount;
+            const grossProfitBreakeven = finalPriceExVAT - costOfSales - commissionAmountBreakeven;
+            
             // Update green card (breakeven point or 0% if loss at full price)
             document.getElementById('finalPrice').textContent = `£${finalPriceIncVAT.toFixed(2)}`;
             document.getElementById('discountPercentage').textContent = `${displayDiscountPercent.toFixed(1)}%`;
             document.getElementById('orderValueDiscountedExVAT').textContent = `£${finalPriceExVAT.toFixed(2)}`;
             document.getElementById('costOfSalesDiscounted').textContent = `-£${costOfSales.toFixed(2)}`;
             document.getElementById('commissionAmountDiscounted').textContent = `-£${commissionAmountBreakeven.toFixed(2)}`;
+            document.getElementById('grossProfitDiscounted').textContent = `£${grossProfitBreakeven.toFixed(2)}`;
             document.getElementById('finalProfit').textContent = `£${actualNetProfitBreakeven.toFixed(2)}`;
             
             // Update blue card (original order)
@@ -619,6 +643,7 @@
             document.getElementById('orderValueOriginalExVAT').textContent = `£${sellingPriceExVAT.toFixed(2)}`;
             document.getElementById('costOfSales').textContent = `-£${costOfSales.toFixed(2)}`;
             document.getElementById('commissionAmount').textContent = `-£${commissionAmount.toFixed(2)}`;
+            document.getElementById('grossProfitOriginal').textContent = `£${grossProfitOriginal.toFixed(2)}`;
             document.getElementById('actualNetProfit').textContent = `£${actualNetProfit.toFixed(2)}`;
             
             // Update discount summary
