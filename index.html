@@ -381,7 +381,7 @@
         </div>
         
         <h1>Profitability Calculator - Management</h1>
-        <p class="subtitle">Shows the expected profitability on a particular order, and gives the maximum discount to maintain £100 net profit.</p>
+        <p class="subtitle">This shows the expected profitability on a particular order, break-even point and the maximum discount allowable.</p>
         
         <div class="calculator-section">
             <div class="input-grid">
@@ -422,10 +422,10 @@
             <h2>Discount Analysis for <span id="productName">Product</span></h2>
             
             <div class="results-grid">
-                <div class="discount-card">
-                    <div class="card-title">After Maximum Discount (£100 Net Profit)</div>
+                <div class="discount-card" id="discountCard">
+                    <div class="card-title" id="discountCardTitle">Break-Even Point</div>
                     <div class="main-figure" id="finalPrice">£0.00</div>
-                    <div class="sub-figure">Customer Pays (<span id="discountPercentage">0%</span> discount) Inc VAT</div>
+                    <div class="sub-figure" id="discountCardSubtitle">Customer Pays (Max <span id="discountPercentage">0%</span> discount) Inc VAT</div>
                     <div class="price-summary">
                         <div class="price-line">
                             <span>Order value (Ex VAT):</span>
@@ -441,15 +441,15 @@
                         </div>
                         <div class="price-line">
                             <span>Variable fitting costs:</span>
-                            <span>-£80.00</span>
+                            <span id="variableFittingDiscounted">-£80.00</span>
                         </div>
                         <div class="price-line">
                             <span>Fixed overheads per order:</span>
-                            <span>-£380.00</span>
+                            <span id="fixedOverheadsDiscounted">-£380.00</span>
                         </div>
                         <div class="price-line">
-                            <span>Net profit:</span>
-                            <span>£100.00</span>
+                            <span id="profitLabel">Net profit:</span>
+                            <span id="finalProfit">£0.00</span>
                         </div>
                     </div>
                 </div>
@@ -488,23 +488,23 @@
             </div>
             
             <div class="business-breakdown">
-                <h4>Discount Summary</h4>
-                <div class="breakdown-grid">
+                <h4 id="breakdownTitle">Discount Summary</h4>
+                <div class="breakdown-grid" id="breakdownGrid">
                     <div class="breakdown-item">
-                        <strong>Discount amount (Inc VAT):</strong><br>
-                        <span id="targetDiscountAmount">£0.00 (0%)</span>
-                    </div>
-                    <div class="breakdown-item">
-                        <strong>Max discount before loss (Inc VAT):</strong><br>
+                        <strong>Maximum discount before loss (Inc VAT):</strong><br>
                         <span id="maxDiscountBeforeLoss">£0.00 (0%)</span>
                     </div>
                     <div class="breakdown-item">
-                        <strong>Customer pays at breakeven (Inc VAT):</strong><br>
-                        <span id="breakEvenCustomerPrice">£0.00</span>
+                        <strong>Discount for £100 profit (Inc VAT):</strong><br>
+                        <span id="targetDiscountAmount">£0.00 (0%)</span>
                     </div>
                     <div class="breakdown-item">
-                        <strong>Extra discount available (Inc VAT):</strong><br>
-                        <span id="discountCushion">£0.00</span>
+                        <strong>Customer pays at £100 profit (Inc VAT):</strong><br>
+                        <span id="priceFor100Profit">£0.00</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <strong>Profit reduction at max discount:</strong><br>
+                        <span id="profitReduction">£0.00</span>
                     </div>
                 </div>
             </div>
@@ -564,40 +564,55 @@
             const originalRevenueAfterCommission = sellingPriceExVAT * (1 - commission);
             const actualNetProfit = originalRevenueAfterCommission - costOfSales - fixedCosts;
             
-            // Calculate maximum discount that maintains £100 profit (ex VAT)
-            const minRevenue = (costOfSales + fixedCosts + minProfit) / (1 - commission);
-            const maxDiscountFor100ProfitExVAT = Math.max(0, sellingPriceExVAT - minRevenue);
-            const maxDiscountFor100ProfitIncVAT = maxDiscountFor100ProfitExVAT * (1 + vatRate);
-            const maxDiscountFor100ProfitPercent = (maxDiscountFor100ProfitIncVAT / sellingPriceIncVAT) * 100;
-            
-            // Calculate final prices after maximum discount
-            const finalPriceIncVAT = sellingPriceIncVAT - maxDiscountFor100ProfitIncVAT;
-            const finalPriceExVAT = sellingPriceExVAT - maxDiscountFor100ProfitExVAT;
-            
-            // Calculate costs for discounted scenario
-            // Product cost stays the same (cost of making blinds doesn't change)
-            // Only commission changes as it's based on what customer actually pays
-            const commissionAmountDiscounted = finalPriceExVAT * commission;
-            
             // Calculate absolute maximum discount before making a loss (ex VAT)
             const breakEvenRevenue = (costOfSales + fixedCosts) / (1 - commission);
             const maxDiscountBeforeLossExVAT = Math.max(0, sellingPriceExVAT - breakEvenRevenue);
             const maxDiscountBeforeLossIncVAT = maxDiscountBeforeLossExVAT * (1 + vatRate);
             const maxDiscountBeforeLossPercent = (maxDiscountBeforeLossIncVAT / sellingPriceIncVAT) * 100;
             
-            // Calculate other metrics
-            const breakEvenCustomerPrice = sellingPriceIncVAT - maxDiscountBeforeLossIncVAT;
-            const discountCushion = maxDiscountBeforeLossIncVAT - maxDiscountFor100ProfitIncVAT;
+            // Check if order makes a loss at full price (no discount)
+            const isLossAtFullPrice = actualNetProfit < 0;
+            
+            // For green card: if order makes loss at full price, show 0% discount, otherwise show breakeven
+            let finalPriceIncVAT, finalPriceExVAT, commissionAmountBreakeven, actualNetProfitBreakeven, displayDiscountPercent;
+            
+            if (isLossAtFullPrice) {
+                // Show original order with 0% discount
+                finalPriceIncVAT = sellingPriceIncVAT;
+                finalPriceExVAT = sellingPriceExVAT;
+                commissionAmountBreakeven = commissionAmount;
+                actualNetProfitBreakeven = actualNetProfit;
+                displayDiscountPercent = 0;
+            } else {
+                // Show breakeven scenario
+                finalPriceIncVAT = sellingPriceIncVAT - maxDiscountBeforeLossIncVAT;
+                finalPriceExVAT = sellingPriceExVAT - maxDiscountBeforeLossExVAT;
+                commissionAmountBreakeven = finalPriceExVAT * commission;
+                const revenueAfterCommissionBreakeven = finalPriceExVAT - commissionAmountBreakeven;
+                actualNetProfitBreakeven = revenueAfterCommissionBreakeven - costOfSales - fixedCosts;
+                displayDiscountPercent = maxDiscountBeforeLossPercent;
+            }
+            
+            // Calculate maximum discount that maintains £100 profit (ex VAT) - NOW USED FOR COMPARISON
+            const minRevenue = (costOfSales + fixedCosts + minProfit) / (1 - commission);
+            const maxDiscountFor100ProfitExVAT = Math.max(0, sellingPriceExVAT - minRevenue);
+            const maxDiscountFor100ProfitIncVAT = maxDiscountFor100ProfitExVAT * (1 + vatRate);
+            const maxDiscountFor100ProfitPercent = (maxDiscountFor100ProfitIncVAT / sellingPriceIncVAT) * 100;
+            const priceFor100ProfitIncVAT = sellingPriceIncVAT - maxDiscountFor100ProfitIncVAT;
+            
+            // Calculate profit reduction
+            const profitReduction = actualNetProfit - actualNetProfitBreakeven;
             
             // Update product name
             document.getElementById('productName').textContent = productName;
             
-            // Update green card (after maximum discount)
+            // Update green card (breakeven point or 0% if loss at full price)
             document.getElementById('finalPrice').textContent = `£${finalPriceIncVAT.toFixed(2)}`;
-            document.getElementById('discountPercentage').textContent = `${maxDiscountFor100ProfitPercent.toFixed(1)}%`;
+            document.getElementById('discountPercentage').textContent = `${displayDiscountPercent.toFixed(1)}%`;
             document.getElementById('orderValueDiscountedExVAT').textContent = `£${finalPriceExVAT.toFixed(2)}`;
-            document.getElementById('costOfSalesDiscounted').textContent = `-£${costOfSales.toFixed(2)}`; // Same product cost
-            document.getElementById('commissionAmountDiscounted').textContent = `-£${commissionAmountDiscounted.toFixed(2)}`;
+            document.getElementById('costOfSalesDiscounted').textContent = `-£${costOfSales.toFixed(2)}`;
+            document.getElementById('commissionAmountDiscounted').textContent = `-£${commissionAmountBreakeven.toFixed(2)}`;
+            document.getElementById('finalProfit').textContent = `£${actualNetProfitBreakeven.toFixed(2)}`;
             
             // Update blue card (original order)
             document.getElementById('originalPrice').textContent = `£${sellingPriceIncVAT.toFixed(2)}`;
@@ -607,10 +622,13 @@
             document.getElementById('actualNetProfit').textContent = `£${actualNetProfit.toFixed(2)}`;
             
             // Update discount summary
+            const displayMaxDiscountPercent = isLossAtFullPrice ? 0 : maxDiscountBeforeLossPercent;
+            const displayMaxDiscountAmount = isLossAtFullPrice ? 0 : maxDiscountBeforeLossIncVAT;
+            
+            document.getElementById('maxDiscountBeforeLoss').textContent = `£${displayMaxDiscountAmount.toFixed(2)} (${displayMaxDiscountPercent.toFixed(1)}%)`;
             document.getElementById('targetDiscountAmount').textContent = `£${maxDiscountFor100ProfitIncVAT.toFixed(2)} (${maxDiscountFor100ProfitPercent.toFixed(1)}%)`;
-            document.getElementById('maxDiscountBeforeLoss').textContent = `£${maxDiscountBeforeLossIncVAT.toFixed(2)} (${maxDiscountBeforeLossPercent.toFixed(1)}%)`;
-            document.getElementById('breakEvenCustomerPrice').textContent = `£${breakEvenCustomerPrice.toFixed(2)}`;
-            document.getElementById('discountCushion').textContent = `£${discountCushion.toFixed(2)}`;
+            document.getElementById('priceFor100Profit').textContent = `£${priceFor100ProfitIncVAT.toFixed(2)}`;
+            document.getElementById('profitReduction').textContent = `£${profitReduction.toFixed(2)}`;
             
             // Generate discount scenarios
             generateDiscountScenarios(sellingPriceIncVAT, sellingPriceExVAT, costOfSales, fixedCosts, commission, vatRate);
