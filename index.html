@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discount Calculator - Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .logo-section {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px 0;
+        }
+        
+        .company-logo {
+            max-height: 80px;
+            width: auto;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 35px;
+            font-size: 1.1em;
+        }
+        
+        .calculator-section {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+        }
+        
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .input-group {
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+            font-size: 1em;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e6ed;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #fafbfc;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: #2a5298;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(42, 82, 152, 0.1);
+        }
+        
+        .calculate-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(42, 82, 152, 0.3);
+        }
+        
+        .calculate-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .results {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 25px;
+        }
+        
+        .results h2 {
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            text-align: center;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .discount-card {
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            background: rgba(46, 204, 113, 0.2);
+            border: 2px solid #2ecc71;
+        }
+        
+        .profit-card {
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            background: rgba(52, 152, 219, 0.2);
+            border: 2px solid #3498db;
+        }
+        
+        .card-title {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+        
+        .main-figure {
+            font-size: 2.2em;
+            font-weight: 900;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .sub-figure {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        
+        .price-summary {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        
+        .price-line {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+        
+        .price-line:last-child {
+            margin-bottom: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.5);
+            padding-top: 8px;
+            font-weight: bold;
+            font-size: 1em;
+        }
+        
+        .business-breakdown {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+        
+        .business-breakdown h4 {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .breakdown-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            font-size: 0.9em;
+        }
+        
+        .breakdown-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+        }
+        
+        .warning {
+            background: rgba(255, 107, 107, 0.2);
+            border: 2px solid #ff6b6b;
+            color: #c92a2a;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .info-notice {
+            background: rgba(52, 152, 219, 0.2);
+            border: 2px solid #3498db;
+            color: #2980b9;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .discount-scenarios {
+            margin-top: 25px;
+        }
+        
+        .scenarios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .scenario-card {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .scenario-card.profitable {
+            border-color: #2ecc71;
+            background: rgba(46, 204, 113, 0.15);
+        }
+        
+        .scenario-card.break-even {
+            border-color: #f39c12;
+            background: rgba(243, 156, 18, 0.15);
+        }
+        
+        .scenario-card.loss {
+            border-color: #e74c3c;
+            background: rgba(231, 76, 60, 0.15);
+        }
+        
+        .scenario-discount {
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .scenario-profit {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        
+        .scenario-status {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 768px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .breakdown-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .scenarios-grid {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 12px;
+            }
+            
+            .scenario-card {
+                padding: 12px;
+            }
+            
+            .scenario-discount {
+                font-size: 1.2em;
+            }
+            
+            .scenario-profit {
+                font-size: 1em;
+            }
+            
+            .discount-card, .profit-card {
+                padding: 20px 15px;
+            }
+            
+            .main-figure {
+                font-size: 1.8em;
+            }
+            
+            .sub-figure {
+                font-size: 1em;
+            }
+            
+            .price-summary {
+                padding: 12px;
+            }
+            
+            .price-line {
+                font-size: 0.85em;
+            }
+            
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .company-logo {
+                max-height: 60px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .results h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-section">
+            <img src="logo.png" alt="New Home Blinds" class="company-logo">
+        </div>
+        
+        <h1>Discount Calculator - Management</h1>
+        <p class="subtitle">Shows the maximum discount to maintain £100 profit, and the absolute maximum before making a loss.</p>
+        
+        <div class="calculator-section">
+            <div class="input-grid">
+                <div class="input-group">
+                    <label for="blindType">Blind Type</label>
+                    <select id="blindType">
+                        <option value="fauxwoods" data-margin="65">Fauxwoods</option>
+                        <option value="sherwood" data-margin="62">Sherwood</option>
+                        <option value="bamboo" data-margin="62">Bamboo</option>
+                        <option value="metal-venetian" data-margin="64">Metal Venetian</option>
+                        <option value="perfect-fit-venetians" data-margin="66">Perfect Fit Venetians</option>
+                        <option value="rollers" data-margin="68">Rollers</option>
+                        <option value="rollers-elements" data-margin="60">Rollers (Elements)</option>
+                        <option value="verticals" data-margin="63">Verticals</option>
+                        <option value="verticals-elements" data-margin="63">Verticals (Elements)</option>
+                        <option value="pleated" data-margin="65">Pleated</option>
+                        <option value="pleated-perfect-fit" data-margin="65">Pleated Perfect Fit</option>
+                        <option value="curtains" data-margin="60">Curtains</option>
+                        <option value="romans" data-margin="64">Romans</option>
+                        <option value="dual-shade" data-margin="63">Dual Shade</option>
+                        <option value="diffused" data-margin="63">Diffused</option>
+                        <option value="shutters" data-margin="50">Shutters</option>
+                        <option value="motorised" data-margin="50">Motorised Blinds</option>
+                        <option value="mixed" data-margin="50">MIXED</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="sellingPrice">Selling Price (Inc VAT) (£)</label>
+                    <input type="number" id="sellingPrice" placeholder="e.g., 1800" step="0.01" min="0">
+                </div>
+            </div>
+            
+            <button class="calculate-btn" onclick="calculateMaxDiscount()">Calculate Maximum Discount</button>
+        </div>
+        
+        <div id="results" class="results" style="display: none;">
+            <h2>Discount Analysis for <span id="productName">Product</span></h2>
+            
+            <div class="results-grid">
+                <div class="discount-card">
+                    <div class="card-title">After Maximum Discount (£100 Net Profit)</div>
+                    <div class="main-figure" id="finalPrice">£0.00</div>
+                    <div class="sub-figure">Customer Pays (<span id="discountPercentage">0%</span> discount) Inc VAT</div>
+                    <div class="price-summary">
+                        <div class="price-line">
+                            <span>Order value (Ex VAT):</span>
+                            <span id="orderValueDiscountedExVAT">£0.00</span>
+                        </div>
+                        <div class="price-line">
+                            <span>Product cost (Ex VAT):</span>
+                            <span id="costOfSalesDiscounted">-£0.00</span>
+                        </div>
+                        <div class="price-line">
+                            <span>Sales commission (5% Ex VAT):</span>
+                            <span id="commissionAmountDiscounted">-£0.00</span>
+                        </div>
+                        <div class="price-line">
+                            <span>Variable fitting costs:</span>
+                            <span>-£80.00</span>
+                        </div>
+                        <div class="price-line">
+                            <span>Fixed overheads per order:</span>
+                            <span>-£380.00</span>
+                        </div>
+                        <div class="price-line">
+                            <span>Net profit:</span>
+                            <span>£100.00</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="profit-card">
+                    <div class="card-title">Original Order (No Discount)</div>
+                    <div class="main-figure" id="originalPrice">£0.00</div>
+                    <div class="sub-figure">Original Order Value Inc VAT</div>
+                    <div class="price-summary">
+                        <div class="price-line">
+                            <span>Order value (Ex VAT):</span>
+                            <span id="orderValueOriginalExVAT">£0.00</span>
+                        </div>
+                        <div class="price-line">
+                            <span>Product cost (Ex VAT):</span>
+                            <span id="costOfSales">-£0.00</span>
+                        </div>
+                        <div class="price-line">
+                            <span>Sales commission (5% Ex VAT):</span>
+                            <span id="commissionAmount">-£0.00</span>
+                        </div>
+                        <div class="price-line">
+                            <span>Variable fitting costs:</span>
+                            <span>-£80.00</span>
+                        </div>
+                        <div class="price-line">
+                            <span>Fixed overheads per order:</span>
+                            <span>-£380.00</span>
+                        </div>
+                        <div class="price-line">
+                            <span>Net profit:</span>
+                            <span id="actualNetProfit">£0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="business-breakdown">
+                <h4>Discount Summary</h4>
+                <div class="breakdown-grid">
+                    <div class="breakdown-item">
+                        <strong>Discount amount (Inc VAT):</strong><br>
+                        <span id="targetDiscountAmount">£0.00 (0%)</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <strong>Max discount before loss (Inc VAT):</strong><br>
+                        <span id="maxDiscountBeforeLoss">£0.00 (0%)</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <strong>Customer pays at breakeven (Inc VAT):</strong><br>
+                        <span id="breakEvenCustomerPrice">£0.00</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <strong>Extra discount available (Inc VAT):</strong><br>
+                        <span id="discountCushion">£0.00</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="discount-scenarios">
+                <h3 style="text-align: center; margin-bottom: 20px; color: white;">Discount Scenario Analysis (Inc VAT)</h3>
+                <div class="scenarios-grid" id="scenariosGrid">
+                    <!-- Scenarios will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div id="warning" class="warning" style="display: none;">
+                ⚠️ Warning: This order cannot achieve the £100 minimum profit target. Maximum possible profit: <span id="maxPossibleProfit">£0</span>
+            </div>
+            
+            <div id="infoNotice" class="info-notice" style="display: none;">
+                ℹ️ This order value is below the recommended threshold for standard 5% discounts.
+            </div>
+            
+            <div style="text-align: center; margin-top: 15px; font-size: 0.9em; color: rgba(255,255,255,0.8);">
+                <strong>Note:</strong> Customer-facing prices shown Inc VAT. Internal costs calculated Ex VAT.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateMaxDiscount() {
+            const sellingPriceIncVAT = parseFloat(document.getElementById('sellingPrice').value);
+            const blindType = document.getElementById('blindType');
+            const margin = parseFloat(blindType.options[blindType.selectedIndex].getAttribute('data-margin'));
+            const productName = blindType.options[blindType.selectedIndex].text;
+            
+            // Fixed values
+            const commission = 0.05; // 5% fixed
+            const variableFittingCosts = 80; // £80 variable fitting costs
+            const fixedOverheads = 380; // £380 fixed overheads per order
+            const fixedCosts = variableFittingCosts + fixedOverheads; // £460 total
+            const minProfit = 100; // £100 fixed
+            const vatRate = 0.2; // 20% VAT
+            
+            if (isNaN(sellingPriceIncVAT) || sellingPriceIncVAT <= 0) {
+                alert('Please enter a valid selling price');
+                return;
+            }
+            
+            // Convert to VAT-exclusive for calculations
+            const sellingPriceExVAT = sellingPriceIncVAT / (1 + vatRate);
+            
+            // Calculate cost of sales (based on ex VAT price)
+            const costPercentage = (100 - margin) / 100;
+            const costOfSales = sellingPriceExVAT * costPercentage;
+            
+            // Calculate commission on original price
+            const commissionAmount = sellingPriceExVAT * commission;
+            
+            // Calculate actual net profit from original order (no discount)
+            const originalRevenueAfterCommission = sellingPriceExVAT * (1 - commission);
+            const actualNetProfit = originalRevenueAfterCommission - costOfSales - fixedCosts;
+            
+            // Calculate maximum discount that maintains £100 profit (ex VAT)
+            const minRevenue = (costOfSales + fixedCosts + minProfit) / (1 - commission);
+            const maxDiscountFor100ProfitExVAT = Math.max(0, sellingPriceExVAT - minRevenue);
+            const maxDiscountFor100ProfitIncVAT = maxDiscountFor100ProfitExVAT * (1 + vatRate);
+            const maxDiscountFor100ProfitPercent = (maxDiscountFor100ProfitIncVAT / sellingPriceIncVAT) * 100;
+            
+            // Calculate final prices after maximum discount
+            const finalPriceIncVAT = sellingPriceIncVAT - maxDiscountFor100ProfitIncVAT;
+            const finalPriceExVAT = sellingPriceExVAT - maxDiscountFor100ProfitExVAT;
+            
+            // Calculate costs for discounted scenario
+            // Product cost stays the same (cost of making blinds doesn't change)
+            // Only commission changes as it's based on what customer actually pays
+            const commissionAmountDiscounted = finalPriceExVAT * commission;
+            
+            // Calculate absolute maximum discount before making a loss (ex VAT)
+            const breakEvenRevenue = (costOfSales + fixedCosts) / (1 - commission);
+            const maxDiscountBeforeLossExVAT = Math.max(0, sellingPriceExVAT - breakEvenRevenue);
+            const maxDiscountBeforeLossIncVAT = maxDiscountBeforeLossExVAT * (1 + vatRate);
+            const maxDiscountBeforeLossPercent = (maxDiscountBeforeLossIncVAT / sellingPriceIncVAT) * 100;
+            
+            // Calculate other metrics
+            const breakEvenCustomerPrice = sellingPriceIncVAT - maxDiscountBeforeLossIncVAT;
+            const discountCushion = maxDiscountBeforeLossIncVAT - maxDiscountFor100ProfitIncVAT;
+            
+            // Update product name
+            document.getElementById('productName').textContent = productName;
+            
+            // Update green card (after maximum discount)
+            document.getElementById('finalPrice').textContent = `£${finalPriceIncVAT.toFixed(2)}`;
+            document.getElementById('discountPercentage').textContent = `${maxDiscountFor100ProfitPercent.toFixed(1)}%`;
+            document.getElementById('orderValueDiscountedExVAT').textContent = `£${finalPriceExVAT.toFixed(2)}`;
+            document.getElementById('costOfSalesDiscounted').textContent = `-£${costOfSales.toFixed(2)}`; // Same product cost
+            document.getElementById('commissionAmountDiscounted').textContent = `-£${commissionAmountDiscounted.toFixed(2)}`;
+            
+            // Update blue card (original order)
+            document.getElementById('originalPrice').textContent = `£${sellingPriceIncVAT.toFixed(2)}`;
+            document.getElementById('orderValueOriginalExVAT').textContent = `£${sellingPriceExVAT.toFixed(2)}`;
+            document.getElementById('costOfSales').textContent = `-£${costOfSales.toFixed(2)}`;
+            document.getElementById('commissionAmount').textContent = `-£${commissionAmount.toFixed(2)}`;
+            document.getElementById('actualNetProfit').textContent = `£${actualNetProfit.toFixed(2)}`;
+            
+            // Update discount summary
+            document.getElementById('targetDiscountAmount').textContent = `£${maxDiscountFor100ProfitIncVAT.toFixed(2)} (${maxDiscountFor100ProfitPercent.toFixed(1)}%)`;
+            document.getElementById('maxDiscountBeforeLoss').textContent = `£${maxDiscountBeforeLossIncVAT.toFixed(2)} (${maxDiscountBeforeLossPercent.toFixed(1)}%)`;
+            document.getElementById('breakEvenCustomerPrice').textContent = `£${breakEvenCustomerPrice.toFixed(2)}`;
+            document.getElementById('discountCushion').textContent = `£${discountCushion.toFixed(2)}`;
+            
+            // Generate discount scenarios
+            generateDiscountScenarios(sellingPriceIncVAT, sellingPriceExVAT, costOfSales, fixedCosts, commission, vatRate);
+            
+            // Show warnings and notices
+            const warningDiv = document.getElementById('warning');
+            const infoDiv = document.getElementById('infoNotice');
+            
+            if (maxDiscountFor100ProfitExVAT <= 0) {
+                // Order cannot achieve £100 profit target
+                document.getElementById('maxPossibleProfit').textContent = `£${actualNetProfit.toFixed(2)}`;
+                warningDiv.style.display = 'block';
+                infoDiv.style.display = 'none';
+            } else {
+                warningDiv.style.display = 'none';
+                
+                // Check if below 5% threshold
+                const standardThreshold = calculateStandardThreshold(margin);
+                if (sellingPriceIncVAT < standardThreshold) {
+                    infoDiv.style.display = 'block';
+                } else {
+                    infoDiv.style.display = 'none';
+                }
+            }
+            
+            document.getElementById('results').style.display = 'block';
+        }
+        
+        function generateDiscountScenarios(sellingPriceIncVAT, sellingPriceExVAT, costOfSales, fixedCosts, commission, vatRate) {
+            const discountPercentages = [10, 15, 20, 25, 30];
+            const scenariosGrid = document.getElementById('scenariosGrid');
+            scenariosGrid.innerHTML = '';
+            
+            discountPercentages.forEach(discountPercent => {
+                const discountAmount = sellingPriceIncVAT * (discountPercent / 100);
+                const finalPriceIncVAT = sellingPriceIncVAT - discountAmount;
+                const finalPriceExVAT = finalPriceIncVAT / (1 + vatRate);
+                
+                const commissionAmount = finalPriceExVAT * commission;
+                const revenueAfterCommission = finalPriceExVAT - commissionAmount;
+                const netProfit = revenueAfterCommission - costOfSales - fixedCosts;
+                
+                const scenarioCard = document.createElement('div');
+                scenarioCard.className = 'scenario-card';
+                
+                // Determine status and styling
+                let statusClass = '';
+                let statusText = '';
+                
+                if (netProfit > 0) {
+                    statusClass = 'profitable';
+                    statusText = 'Profitable';
+                } else if (netProfit === 0) {
+                    statusClass = 'break-even';
+                    statusText = 'Break-even';
+                } else {
+                    statusClass = 'loss';
+                    statusText = 'Loss';
+                }
+                
+                scenarioCard.classList.add(statusClass);
+                
+                scenarioCard.innerHTML = `
+                    <div class="scenario-discount">${discountPercent}%</div>
+                    <div class="scenario-profit">£${netProfit.toFixed(2)}</div>
+                    <div class="scenario-status">${statusText}</div>
+                `;
+                
+                scenariosGrid.appendChild(scenarioCard);
+            });
+        }
+        
+        function calculateStandardThreshold(margin) {
+            const commission = 0.05;
+            const fixedCosts = 460;
+            const minProfit = 100;
+            const vatRate = 0.2;
+            const costPercentage = (100 - margin) / 100;
+            const fixedRequirements = fixedCosts + minProfit;
+            const discount5Factor = (1 - 0.05) * (1 - commission);
+            const denominator = discount5Factor - costPercentage;
+            
+            if (denominator > 0) {
+                const minPriceExVAT = fixedRequirements / denominator;
+                const minPriceIncVAT = minPriceExVAT * (1 + vatRate);
+                return Math.ceil(minPriceIncVAT / 100) * 100;
+            }
+            return 0;
+        }
+        
+        // Add event listeners for real-time calculation
+        document.getElementById('sellingPrice').addEventListener('input', function() {
+            if (this.value) calculateMaxDiscount();
+        });
+        
+        document.getElementById('blindType').addEventListener('change', function() {
+            if (document.getElementById('sellingPrice').value) calculateMaxDiscount();
+        });
+    </script>
+</body>
+</html>
