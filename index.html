@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profitability Calculator - Management</title>
     <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            --secondary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary-color: #2a5298;
+            --accent-color: #3498db;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --text-dark: #2c3e50;
+            --text-light: #666;
+            --border-color: #e0e6ed;
+            --background-light: #f8f9fa;
+            --white-alpha: rgba(255, 255, 255, 0.15);
+            --spacing-xs: 8px;
+            --spacing-sm: 15px;
+            --spacing-md: 20px;
+            --spacing-lg: 25px;
+            --spacing-xl: 35px;
+            --border-radius: 12px;
+            --border-radius-lg: 20px;
+            --border-radius-xl: 25px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,9 +38,9 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: var(--primary-gradient);
             min-height: 100vh;
-            padding: 20px;
+            padding: var(--spacing-md);
         }
         
         .container {
@@ -23,54 +48,52 @@
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(15px);
-            border-radius: 25px;
-            padding: 35px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-lg);
         }
         
-        .logo-section {
+        .header {
             text-align: center;
-            margin-bottom: 20px;
-            padding: 15px 0;
+            margin-bottom: var(--spacing-xl);
         }
         
         .company-logo {
             max-height: 80px;
             width: auto;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+            margin-bottom: var(--spacing-sm);
         }
         
         h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 15px;
+            color: var(--text-dark);
+            margin-bottom: var(--spacing-sm);
             font-size: 2.5em;
-            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            background: var(--primary-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 35px;
+            color: var(--text-light);
             font-size: 1.1em;
         }
         
         .calculator-section {
             background: white;
             padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            margin-bottom: 25px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            margin-bottom: var(--spacing-lg);
         }
         
         .input-section {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
+            background: var(--background-light);
+            border: 1px solid var(--border-color);
+            border-radius: var(--spacing-sm);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
         }
         
         .input-section:last-child {
@@ -80,10 +103,10 @@
         .section-title {
             font-size: 1.3em;
             font-weight: 700;
-            color: #2c3e50;
-            margin-bottom: 20px;
+            color: var(--text-dark);
+            margin-bottom: var(--spacing-md);
             padding-bottom: 10px;
-            border-bottom: 2px solid #3498db;
+            border-bottom: 2px solid var(--accent-color);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -92,7 +115,7 @@
         .section-icon {
             width: 24px;
             height: 24px;
-            background: #3498db;
+            background: var(--accent-color);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -105,30 +128,26 @@
         .input-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            gap: var(--spacing-md);
         }
         
         .input-grid.single-column {
             grid-template-columns: 1fr;
         }
         
-        .input-group {
-            position: relative;
-        }
-        
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: var(--spacing-xs);
             font-weight: 600;
             color: #444;
             font-size: 1em;
         }
         
-        select, input {
+        select, input[type="number"] {
             width: 100%;
-            padding: 15px 20px;
-            border: 2px solid #e0e6ed;
-            border-radius: 12px;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
             font-size: 16px;
             transition: all 0.3s ease;
             background: #fafbfc;
@@ -136,20 +155,20 @@
         
         select:focus, input:focus {
             outline: none;
-            border-color: #2a5298;
+            border-color: var(--primary-color);
             background: white;
             box-shadow: 0 0 0 4px rgba(42, 82, 152, 0.1);
         }
         
         .radio-group {
             display: flex;
-            gap: 20px;
-            margin-top: 8px;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-xs);
         }
         
         .radio-group.vertical {
             flex-direction: column;
-            gap: 8px;
+            gap: var(--spacing-xs);
         }
         
         .radio-option {
@@ -171,10 +190,10 @@
         .calculate-btn {
             width: 100%;
             padding: 18px;
-            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            background: var(--primary-gradient);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: var(--border-radius);
             font-size: 18px;
             font-weight: 700;
             cursor: pointer;
@@ -189,15 +208,15 @@
         }
         
         .results {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--secondary-gradient);
             color: white;
             padding: 30px;
-            border-radius: 20px;
-            margin-top: 25px;
+            border-radius: var(--border-radius-lg);
+            margin-top: var(--spacing-lg);
         }
         
         .results h2 {
-            margin-bottom: 25px;
+            margin-bottom: var(--spacing-lg);
             font-size: 1.8em;
             text-align: center;
         }
@@ -205,30 +224,30 @@
         .results-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-bottom: 25px;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .card {
+            padding: var(--spacing-lg);
+            border-radius: var(--spacing-sm);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            border: 2px solid;
         }
         
         .profit-card {
-            padding: 25px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            text-align: center;
             background: rgba(52, 152, 219, 0.2);
-            border: 2px solid #3498db;
+            border-color: var(--accent-color);
         }
         
         .discount-card {
-            padding: 25px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            text-align: center;
             background: rgba(46, 204, 113, 0.2);
-            border: 2px solid #2ecc71;
+            border-color: var(--success-color);
         }
         
         .card-title {
-            margin-bottom: 15px;
+            margin-bottom: var(--spacing-sm);
             font-size: 1.1em;
             font-weight: 600;
         }
@@ -236,19 +255,19 @@
         .main-figure {
             font-size: 2.2em;
             font-weight: 900;
-            margin-bottom: 8px;
+            margin-bottom: var(--spacing-xs);
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
         }
         
         .sub-figure {
             font-size: 1.2em;
-            margin-bottom: 15px;
+            margin-bottom: var(--spacing-sm);
             opacity: 0.9;
         }
         
         .price-summary {
             background: rgba(255, 255, 255, 0.3);
-            padding: 15px;
+            padding: var(--spacing-sm);
             border-radius: 10px;
             margin-bottom: 10px;
             text-align: left;
@@ -257,52 +276,52 @@
         .price-line {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
+            margin-bottom: var(--spacing-xs);
             font-size: 0.9em;
         }
         
         .price-line.subtotal {
-            border-top: 1px solid rgba(255, 255, 255, 0.4);
-            padding-top: 8px;
-            margin-top: 8px;
+            border-top: 1px solid var(--white-alpha);
+            padding-top: var(--spacing-xs);
+            margin-top: var(--spacing-xs);
             font-weight: 600;
             background: rgba(255, 255, 255, 0.1);
-            padding-left: 8px;
-            padding-right: 8px;
+            padding-left: var(--spacing-xs);
+            padding-right: var(--spacing-xs);
             border-radius: 4px;
         }
         
         .price-line:last-child {
             margin-bottom: 0;
             border-top: 1px solid rgba(255, 255, 255, 0.5);
-            padding-top: 8px;
+            padding-top: var(--spacing-xs);
             font-weight: bold;
             font-size: 1em;
         }
         
-        .business-breakdown {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 20px;
+        .breakdown {
+            background: var(--white-alpha);
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius);
+            margin-top: var(--spacing-md);
         }
         
-        .business-breakdown h4 {
-            margin-bottom: 15px;
+        .breakdown h4 {
+            margin-bottom: var(--spacing-sm);
             text-align: center;
         }
         
         .breakdown-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: var(--spacing-md);
             font-size: 0.9em;
         }
         
         .breakdown-item {
             background: rgba(255, 255, 255, 0.1);
-            padding: 12px;
-            border-radius: 8px;
+            padding: var(--border-radius);
+            border-radius: var(--spacing-xs);
         }
         
         .breakdown-item.prominent {
@@ -312,44 +331,50 @@
             font-size: 1.05em;
         }
         
-        .discount-scenarios {
-            margin-top: 25px;
+        .scenarios {
+            margin-top: var(--spacing-lg);
+        }
+        
+        .scenarios h3 {
+            text-align: center;
+            margin-bottom: var(--spacing-md);
+            color: white;
         }
         
         .scenarios-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            gap: var(--spacing-sm);
         }
         
         .scenario-card {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            padding: 15px;
+            background: var(--white-alpha);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-sm);
             text-align: center;
             border: 2px solid rgba(255, 255, 255, 0.3);
             transition: all 0.3s ease;
         }
         
         .scenario-card.profitable {
-            border-color: #2ecc71;
+            border-color: var(--success-color);
             background: rgba(46, 204, 113, 0.15);
         }
         
         .scenario-card.break-even {
-            border-color: #f39c12;
+            border-color: var(--warning-color);
             background: rgba(243, 156, 18, 0.15);
         }
         
         .scenario-card.loss {
-            border-color: #e74c3c;
+            border-color: var(--danger-color);
             background: rgba(231, 76, 60, 0.15);
         }
         
         .scenario-discount {
             font-size: 1.4em;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: var(--spacing-xs);
         }
         
         .scenario-profit {
@@ -362,44 +387,32 @@
             opacity: 0.9;
         }
         
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .results-grid {
+            .results-grid, .breakdown-grid {
                 grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .breakdown-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
             }
             
             .scenarios-grid {
                 grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-                gap: 12px;
             }
             
             .input-grid {
                 grid-template-columns: 1fr;
-                gap: 15px;
             }
             
             .container {
                 margin: 10px;
-                padding: 20px;
+                padding: var(--spacing-md);
             }
             
             .calculator-section {
-                padding: 20px;
+                padding: var(--spacing-md);
             }
             
             .input-section {
-                padding: 20px;
-                margin-bottom: 20px;
-            }
-            
-            .section-title {
-                font-size: 1.1em;
-                margin-bottom: 15px;
+                padding: var(--spacing-md);
+                margin-bottom: var(--spacing-md);
             }
             
             h1 {
@@ -410,55 +423,11 @@
         @media (max-width: 480px) {
             .container {
                 margin: 5px;
-                padding: 15px;
-            }
-            
-            .calculator-section {
-                padding: 15px;
-            }
-            
-            .input-section {
-                padding: 15px;
-                margin-bottom: 15px;
-            }
-            
-            .section-title {
-                font-size: 1em;
-                margin-bottom: 12px;
-            }
-            
-            .input-grid {
-                gap: 12px;
-            }
-            
-            select, input {
-                padding: 12px 15px;
-                font-size: 16px;
-            }
-            
-            .radio-group {
-                gap: 15px;
-            }
-            
-            .radio-group.vertical {
-                gap: 6px;
+                padding: var(--spacing-sm);
             }
             
             .scenarios-grid {
                 grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-                gap: 10px;
-            }
-            
-            .scenario-card {
-                padding: 10px;
-            }
-            
-            .scenario-discount {
-                font-size: 1.2em;
-            }
-            
-            .scenario-profit {
-                font-size: 1em;
             }
             
             h1 {
@@ -468,26 +437,19 @@
             .company-logo {
                 max-height: 60px;
             }
-            
-            .subtitle {
-                font-size: 1em;
-                margin-bottom: 25px;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="logo-section">
+        <header class="header">
             <img src="logo.png" alt="New Home Blinds" class="company-logo">
-        </div>
+            <h1>Profitability Calculator - Management</h1>
+            <p class="subtitle">Expected profitability, break-even point and maximum discount allowable for orders.</p>
+        </header>
         
-        <h1>Profitability Calculator - Management</h1>
-        <p class="subtitle">This shows the expected profitability on a particular order, break-even point and the maximum discount allowable.</p>
-        
-        <div class="calculator-section">
-            <!-- Order Details Section -->
-            <div class="input-section">
+        <main class="calculator-section">
+            <section class="input-section">
                 <div class="section-title">
                     <div class="section-icon">1</div>
                     Order Details
@@ -495,9 +457,7 @@
                 <div class="input-grid">
                     <div class="input-group">
                         <label for="blindType">Blind Type</label>
-                        <select id="blindType">
-                            <!-- Options will be populated by JavaScript -->
-                        </select>
+                        <select id="blindType"></select>
                     </div>
                     
                     <div class="input-group">
@@ -520,10 +480,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
             
-            <!-- Supplier Details Section -->
-            <div class="input-section">
+            <section class="input-section">
                 <div class="section-title">
                     <div class="section-icon">2</div>
                     Supplier Details
@@ -557,10 +516,9 @@
                         <input type="number" id="numDeliveries" placeholder="1" value="1" step="1" min="1">
                     </div>
                 </div>
-            </div>
+            </section>
             
-            <!-- Other Section -->
-            <div class="input-section">
+            <section class="input-section">
                 <div class="section-title">
                     <div class="section-icon">3</div>
                     Other
@@ -571,16 +529,16 @@
                         <input type="number" id="adHocCosts" placeholder="e.g., 350" step="0.01" min="0">
                     </div>
                 </div>
-            </div>
+            </section>
             
             <button class="calculate-btn" onclick="calculate()">Calculate</button>
-        </div>
+        </main>
         
         <div id="results" class="results" style="display: none;">
             <h2>Profitability Analysis for <span id="productName">Product</span></h2>
             
             <div class="results-grid">
-                <div class="profit-card">
+                <div class="card profit-card">
                     <div class="card-title" id="originalTitle">Original Order</div>
                     <div class="main-figure" id="originalPrice">£0.00</div>
                     <div class="sub-figure">Customer Pays Inc VAT</div>
@@ -624,7 +582,7 @@
                     </div>
                 </div>
                 
-                <div class="discount-card">
+                <div class="card discount-card">
                     <div class="card-title">Break-Even Point</div>
                     <div class="main-figure" id="breakEvenPrice">£0.00</div>
                     <div class="sub-figure">Customer Pays (Max <span id="maxDiscount">0%</span> discount) Inc VAT</div>
@@ -669,7 +627,7 @@
                 </div>
             </div>
             
-            <div class="business-breakdown">
+            <div class="breakdown">
                 <h4>Discount Summary</h4>
                 <div class="breakdown-grid">
                     <div class="breakdown-item prominent">
@@ -691,17 +649,24 @@
                 </div>
             </div>
             
-            <div class="discount-scenarios">
-                <h3 style="text-align: center; margin-bottom: 20px; color: white;">Discount Scenario Analysis (Inc VAT)</h3>
-                <div class="scenarios-grid" id="scenariosGrid">
-                    <!-- Scenarios will be populated by JavaScript -->
-                </div>
+            <div class="scenarios">
+                <h3>Discount Scenario Analysis (Inc VAT)</h3>
+                <div class="scenarios-grid" id="scenariosGrid"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // MARGIN CONFIGURATION - Update margins here and dropdowns will auto-update
+        // Configuration
+        const CONFIG = {
+            VAT_RATE: 0.2,
+            COMMISSION_RATE: 0.05,
+            FITTING_COSTS: 80,
+            FIXED_OVERHEADS: 380,
+            TARGET_PROFIT: 100,
+            DISCOUNT_SCENARIOS: [5, 10, 15, 20, 25, 30]
+        };
+
         const PRODUCT_MARGINS = [
             { name: "MIXED ORDER", margin: 52 },
             { name: "Fauxwoods", margin: 65 },
@@ -723,195 +688,146 @@
             { name: "Motorised Blinds", margin: 50 }
         ];
 
-        // Populate dropdown on page load
+        // DOM Elements
+        const elements = {
+            blindType: document.getElementById('blindType'),
+            sellingPrice: document.getElementById('sellingPrice'),
+            customerDiscount: document.getElementById('customerDiscount'),
+            supplierDiscount: document.getElementById('supplierDiscount'),
+            numDeliveries: document.getElementById('numDeliveries'),
+            adHocCosts: document.getElementById('adHocCosts'),
+            results: document.getElementById('results'),
+            scenariosGrid: document.getElementById('scenariosGrid')
+        };
+
+        // Initialize application
+        function init() {
+            populateBlindTypes();
+            attachEventListeners();
+        }
+
         function populateBlindTypes() {
-            const select = document.getElementById('blindType');
-            if (!select) return;
+            if (!elements.blindType) return;
             
-            select.innerHTML = '';
-            
-            PRODUCT_MARGINS.forEach(product => {
-                const option = document.createElement('option');
-                option.value = product.margin;
-                option.textContent = `${product.name} (${product.margin}% margin)`;
-                select.appendChild(option);
+            elements.blindType.innerHTML = PRODUCT_MARGINS
+                .map(product => `<option value="${product.margin}">${product.name} (${product.margin}% margin)</option>`)
+                .join('');
+        }
+
+        function attachEventListeners() {
+            const inputs = ['sellingPrice', 'customerDiscount', 'supplierDiscount', 'numDeliveries', 'adHocCosts'];
+            const selects = ['blindType'];
+            const radios = ['discountType', 'deliveryType'];
+
+            inputs.forEach(id => {
+                const element = elements[id];
+                if (element) element.addEventListener('input', calculate);
+            });
+
+            selects.forEach(id => {
+                const element = elements[id];
+                if (element) element.addEventListener('change', calculate);
+            });
+
+            radios.forEach(name => {
+                document.querySelectorAll(`input[name="${name}"]`)
+                    .forEach(radio => radio.addEventListener('change', calculate));
             });
         }
 
-        function getCustomerDiscount() {
-            const discountValue = parseFloat(document.getElementById('customerDiscount').value) || 0;
+        function getInputValues() {
+            const deliveryTypeEl = document.querySelector('input[name="deliveryType"]:checked');
             const discountTypeEl = document.querySelector('input[name="discountType"]:checked');
-            const discountType = discountTypeEl ? discountTypeEl.value : 'percentage';
-            const sellingPrice = parseFloat(document.getElementById('sellingPrice').value) || 0;
             
-            if (discountValue <= 0) {
+            return {
+                sellingPriceIncVAT: parseFloat(elements.sellingPrice.value) || 0,
+                margin: parseFloat(elements.blindType.value) || 0,
+                supplierDiscountPercent: parseFloat(elements.supplierDiscount.value) || 0,
+                deliveryRate: deliveryTypeEl ? parseFloat(deliveryTypeEl.value) : 0,
+                numDeliveries: parseFloat(elements.numDeliveries.value) || 1,
+                adHocCosts: parseFloat(elements.adHocCosts.value) || 0,
+                customerDiscountValue: parseFloat(elements.customerDiscount.value) || 0,
+                discountType: discountTypeEl ? discountTypeEl.value : 'percentage'
+            };
+        }
+
+        function calculateCustomerDiscount(inputs) {
+            if (inputs.customerDiscountValue <= 0) {
                 return { amount: 0, description: 'No Discount' };
             }
             
-            if (discountType === 'percentage') {
-                const amount = sellingPrice * (discountValue / 100);
-                return { 
-                    amount: amount, 
-                    description: `${discountValue}% discount` 
-                };
+            if (inputs.discountType === 'percentage') {
+                const amount = inputs.sellingPriceIncVAT * (inputs.customerDiscountValue / 100);
+                return { amount, description: `${inputs.customerDiscountValue}% discount` };
             } else {
                 return { 
-                    amount: discountValue, 
-                    description: `£${discountValue.toFixed(2)} discount` 
+                    amount: inputs.customerDiscountValue, 
+                    description: `£${inputs.customerDiscountValue.toFixed(2)} discount` 
                 };
             }
         }
 
-        function calculate() {
-            try {
-                // Get inputs
-                const sellingPriceIncVAT = parseFloat(document.getElementById('sellingPrice').value);
-                const margin = parseFloat(document.getElementById('blindType').value);
-                const supplierDiscountPercent = parseFloat(document.getElementById('supplierDiscount').value) || 0;
+        function updateDisplay(data) {
+            const productName = PRODUCT_MARGINS.find(p => p.margin === data.margin)?.name || 'Unknown Product';
+            
+            // Update product name and original order
+            document.getElementById('productName').textContent = productName;
+            document.getElementById('originalTitle').textContent = `Original Order (${data.customerDiscount.description})`;
+            
+            // Update all display elements
+            const updates = {
+                originalPrice: data.finalSellingPriceIncVAT,
+                originalOrderEx: data.customerPaysExVAT,
+                originalCost: data.productCost,
+                originalCommission: data.originalCommission,
+                originalGross: `${data.originalGrossProfit.toFixed(2)} (${((data.originalGrossProfit / data.originalSellingPriceExVAT) * 100).toFixed(1)}%)`,
+                originalDelivery: data.deliveryCharges,
+                originalAdHoc: data.adHocCosts,
+                originalNet: `${data.originalNetProfit.toFixed(2)} (${((data.originalNetProfit / data.originalSellingPriceExVAT) * 100).toFixed(1)}%)`,
                 
-                // Find product name
-                const selectedProduct = PRODUCT_MARGINS.find(p => p.margin === margin);
-                const productName = selectedProduct ? selectedProduct.name : 'Unknown Product';
+                maxDiscount: `${data.displayMaxDiscount.toFixed(1)}%`,
+                breakEvenPrice: data.displayBreakEvenPrice,
+                breakEvenOrderEx: data.displayBreakEvenEx,
+                breakEvenCost: data.productCost,
+                breakEvenCommission: data.displayBreakEvenCommission,
+                breakEvenGross: `${data.displayBreakEvenGross.toFixed(2)} (${((data.displayBreakEvenGross / data.originalSellingPriceExVAT) * 100).toFixed(1)}%)`,
+                breakEvenDelivery: data.deliveryCharges,
+                breakEvenAdHoc: data.adHocCosts,
+                breakEvenNet: `${data.displayBreakEvenNet.toFixed(2)} (${((data.displayBreakEvenNet / data.originalSellingPriceExVAT) * 100).toFixed(1)}%)`,
                 
-                // Get delivery options
-                const deliveryTypeEl = document.querySelector('input[name="deliveryType"]:checked');
-                const deliveryRate = deliveryTypeEl ? parseFloat(deliveryTypeEl.value) : 0;
-                const numDeliveries = parseFloat(document.getElementById('numDeliveries').value) || 1;
-                const deliveryCharges = deliveryRate * numDeliveries;
-                
-                // Get ad hoc costs
-                const adHocCosts = parseFloat(document.getElementById('adHocCosts').value) || 0;
-                
-                // Validate inputs
-                if (!sellingPriceIncVAT || sellingPriceIncVAT <= 0) {
-                    alert('Please enter a valid selling price');
-                    return;
+                maxDiscountAmount: `£${data.maxDiscountDisplay.toFixed(2)} (${data.maxDiscountPercentDisplay.toFixed(1)}%)`,
+                discount100: `£${data.discount100IncVAT.toFixed(2)} (${data.discount100Percent.toFixed(1)}%)`,
+                price100: data.price100IncVAT,
+                profitReduction: data.noDiscountNetProfit - 0
+            };
+
+            Object.entries(updates).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = typeof value === 'number' ? 
+                        (id.includes('Price') || id.includes('Ex') || id.includes('Cost') || id.includes('Commission') || 
+                         id.includes('Delivery') || id.includes('AdHoc') || id.includes('price') || id.includes('Reduction')) ? 
+                        `${id.includes('Cost') || id.includes('Commission') || id.includes('Delivery') || id.includes('AdHoc') || id.includes('Reduction') ? '-' : ''}£${Math.abs(value).toFixed(2)}` : 
+                        value.toFixed(2) : value;
                 }
-                
-                // Get customer discount
-                const customerDiscount = getCustomerDiscount();
-                const finalSellingPriceIncVAT = sellingPriceIncVAT - customerDiscount.amount;
-                
-                if (finalSellingPriceIncVAT <= 0) {
-                    alert('Customer discount cannot be greater than or equal to selling price');
-                    return;
-                }
-                
-                // Constants
-                const VAT_RATE = 0.2;
-                const COMMISSION_RATE = 0.05;
-                const FITTING_COSTS = 80;
-                const FIXED_OVERHEADS = 380;
-                const FIXED_COSTS = FITTING_COSTS + FIXED_OVERHEADS + deliveryCharges + adHocCosts;
-                const TARGET_PROFIT = 100;
-                
-                // Calculate product cost based on ORIGINAL selling price
-                const originalSellingPriceExVAT = sellingPriceIncVAT / (1 + VAT_RATE);
-                const baseCost = originalSellingPriceExVAT * ((100 - margin) / 100);
-                const supplierDiscountAmount = baseCost * (supplierDiscountPercent / 100);
-                const productCost = baseCost - supplierDiscountAmount;
-                
-                // Calculate for original order (what customer pays after discount)
-                const customerPaysExVAT = finalSellingPriceIncVAT / (1 + VAT_RATE);
-                const originalCommission = customerPaysExVAT * COMMISSION_RATE;
-                const originalGrossProfit = customerPaysExVAT - productCost - originalCommission;
-                const originalNetProfit = originalGrossProfit - FIXED_COSTS;
-                
-                // Calculate break-even scenario
-                const breakEvenRevenue = (productCost + FIXED_COSTS) / (1 - COMMISSION_RATE);
-                const maxDiscountExVAT = Math.max(0, originalSellingPriceExVAT - breakEvenRevenue);
-                const maxDiscountIncVAT = maxDiscountExVAT * (1 + VAT_RATE);
-                const maxDiscountPercent = (maxDiscountIncVAT / sellingPriceIncVAT) * 100;
-                
-                const breakEvenPriceIncVAT = sellingPriceIncVAT - maxDiscountIncVAT;
-                const breakEvenPriceExVAT = breakEvenPriceIncVAT / (1 + VAT_RATE);
-                const breakEvenCommission = breakEvenPriceExVAT * COMMISSION_RATE;
-                const breakEvenGrossProfit = breakEvenPriceExVAT - productCost - breakEvenCommission;
-                const breakEvenNetProfit = breakEvenGrossProfit - FIXED_COSTS;
-                
-                // Calculate £100 profit scenario
-                const targetRevenue = (productCost + FIXED_COSTS + TARGET_PROFIT) / (1 - COMMISSION_RATE);
-                const discount100ExVAT = Math.max(0, originalSellingPriceExVAT - targetRevenue);
-                const discount100IncVAT = discount100ExVAT * (1 + VAT_RATE);
-                const discount100Percent = (discount100IncVAT / sellingPriceIncVAT) * 100;
-                const price100IncVAT = sellingPriceIncVAT - discount100IncVAT;
-                
-                // Determine display values
-                const displayMaxDiscount = originalNetProfit < 0 ? 0 : maxDiscountPercent;
-                const displayBreakEvenPrice = originalNetProfit < 0 ? finalSellingPriceIncVAT : breakEvenPriceIncVAT;
-                const displayBreakEvenEx = originalNetProfit < 0 ? customerPaysExVAT : breakEvenPriceExVAT;
-                const displayBreakEvenCommission = originalNetProfit < 0 ? originalCommission : breakEvenCommission;
-                const displayBreakEvenGross = originalNetProfit < 0 ? originalGrossProfit : breakEvenGrossProfit;
-                const displayBreakEvenNet = originalNetProfit < 0 ? originalNetProfit : breakEvenNetProfit;
-                
-                // Update display
-                document.getElementById('productName').textContent = productName;
-                
-                // Update original order (blue card)
-                document.getElementById('originalTitle').textContent = `Original Order (${customerDiscount.description})`;
-                document.getElementById('originalPrice').textContent = `£${finalSellingPriceIncVAT.toFixed(2)}`;
-                document.getElementById('originalOrderEx').textContent = `£${customerPaysExVAT.toFixed(2)}`;
-                document.getElementById('originalCost').textContent = `-£${productCost.toFixed(2)}`;
-                document.getElementById('originalCommission').textContent = `-£${originalCommission.toFixed(2)}`;
-                document.getElementById('originalGross').textContent = `£${originalGrossProfit.toFixed(2)} (${((originalGrossProfit / originalSellingPriceExVAT) * 100).toFixed(1)}%)`;
-                document.getElementById('originalDelivery').textContent = `-£${deliveryCharges.toFixed(2)}`;
-                document.getElementById('originalAdHoc').textContent = `-£${adHocCosts.toFixed(2)}`;
-                document.getElementById('originalNet').textContent = `£${originalNetProfit.toFixed(2)} (${((originalNetProfit / originalSellingPriceExVAT) * 100).toFixed(1)}%)`;
-                
-                // Update break-even (green card)
-                document.getElementById('maxDiscount').textContent = `${displayMaxDiscount.toFixed(1)}%`;
-                document.getElementById('breakEvenPrice').textContent = `£${displayBreakEvenPrice.toFixed(2)}`;
-                document.getElementById('breakEvenOrderEx').textContent = `£${displayBreakEvenEx.toFixed(2)}`;
-                document.getElementById('breakEvenCost').textContent = `-£${productCost.toFixed(2)}`;
-                document.getElementById('breakEvenCommission').textContent = `-£${displayBreakEvenCommission.toFixed(2)}`;
-                document.getElementById('breakEvenGross').textContent = `£${displayBreakEvenGross.toFixed(2)} (${((displayBreakEvenGross / originalSellingPriceExVAT) * 100).toFixed(1)}%)`;
-                document.getElementById('breakEvenDelivery').textContent = `-£${deliveryCharges.toFixed(2)}`;
-                document.getElementById('breakEvenAdHoc').textContent = `-£${adHocCosts.toFixed(2)}`;
-                document.getElementById('breakEvenNet').textContent = `£${displayBreakEvenNet.toFixed(2)} (${((displayBreakEvenNet / originalSellingPriceExVAT) * 100).toFixed(1)}%)`;
-                
-                // Update summary
-                const maxDiscountDisplay = originalNetProfit < 0 ? 0 : maxDiscountIncVAT;
-                const maxDiscountPercentDisplay = originalNetProfit < 0 ? 0 : maxDiscountPercent;
-                document.getElementById('maxDiscountAmount').textContent = `£${maxDiscountDisplay.toFixed(2)} (${maxDiscountPercentDisplay.toFixed(1)}%)`;
-                document.getElementById('discount100').textContent = `£${discount100IncVAT.toFixed(2)} (${discount100Percent.toFixed(1)}%)`;
-                document.getElementById('price100').textContent = `£${price100IncVAT.toFixed(2)}`;
-                
-                const profitReductionAmount = originalNetProfit - displayBreakEvenNet;
-                document.getElementById('profitReduction').textContent = `£${profitReductionAmount.toFixed(2)}`;
-                
-                // Generate discount scenarios
-                generateDiscountScenarios(sellingPriceIncVAT, productCost, FIXED_COSTS, COMMISSION_RATE, VAT_RATE);
-                
-                document.getElementById('results').style.display = 'block';
-                
-            } catch (error) {
-                console.error('Error in calculate function:', error);
-                alert('An error occurred during calculation. Please check the console for details.');
-            }
+            });
+
+            generateDiscountScenarios(data);
         }
 
-        function generateDiscountScenarios(originalPriceIncVAT, productCost, fixedCosts, commissionRate, vatRate) {
-            const discountPercentages = [5, 10, 15, 20, 25, 30];
-            const scenariosGrid = document.getElementById('scenariosGrid');
+        function generateDiscountScenarios(data) {
+            if (!elements.scenariosGrid) return;
             
-            if (!scenariosGrid) return;
-            
-            scenariosGrid.innerHTML = '';
-            
-            discountPercentages.forEach(discountPercent => {
-                const discountAmount = originalPriceIncVAT * (discountPercent / 100);
-                const finalPriceIncVAT = originalPriceIncVAT - discountAmount;
-                const finalPriceExVAT = finalPriceIncVAT / (1 + vatRate);
-                
-                const commissionAmount = finalPriceExVAT * commissionRate;
+            elements.scenariosGrid.innerHTML = CONFIG.DISCOUNT_SCENARIOS.map(discountPercent => {
+                const discountAmount = data.sellingPriceIncVAT * (discountPercent / 100);
+                const finalPriceIncVAT = data.sellingPriceIncVAT - discountAmount;
+                const finalPriceExVAT = finalPriceIncVAT / (1 + CONFIG.VAT_RATE);
+                const commissionAmount = finalPriceExVAT * CONFIG.COMMISSION_RATE;
                 const revenueAfterCommission = finalPriceExVAT - commissionAmount;
-                const netProfit = revenueAfterCommission - productCost - fixedCosts;
+                const netProfit = revenueAfterCommission - data.productCost - data.fixedCosts;
                 
-                const scenarioCard = document.createElement('div');
-                scenarioCard.className = 'scenario-card';
-                
-                let statusClass = '';
-                let statusText = '';
+                let statusClass = 'loss';
+                let statusText = 'Loss';
                 
                 if (netProfit > 0) {
                     statusClass = 'profitable';
@@ -919,52 +835,110 @@
                 } else if (Math.abs(netProfit) < 0.01) {
                     statusClass = 'break-even';
                     statusText = 'Break-even';
-                } else {
-                    statusClass = 'loss';
-                    statusText = 'Loss';
                 }
                 
-                scenarioCard.classList.add(statusClass);
-                
-                scenarioCard.innerHTML = `
-                    <div class="scenario-discount">${discountPercent}%</div>
-                    <div class="scenario-profit">£${netProfit.toFixed(2)}</div>
-                    <div class="scenario-status">${statusText}</div>
+                return `
+                    <div class="scenario-card ${statusClass}">
+                        <div class="scenario-discount">${discountPercent}%</div>
+                        <div class="scenario-profit">£${netProfit.toFixed(2)}</div>
+                        <div class="scenario-status">${statusText}</div>
+                    </div>
                 `;
-                
-                scenariosGrid.appendChild(scenarioCard);
-            });
+            }).join('');
         }
 
-        // Initialize when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            populateBlindTypes();
-        });
+        function calculate() {
+            try {
+                const inputs = getInputValues();
+                
+                if (!inputs.sellingPriceIncVAT || inputs.sellingPriceIncVAT <= 0) {
+                    return; // Silent validation for better UX
+                }
+                
+                const customerDiscount = calculateCustomerDiscount(inputs);
+                const finalSellingPriceIncVAT = inputs.sellingPriceIncVAT - customerDiscount.amount;
+                
+                if (finalSellingPriceIncVAT <= 0) {
+                    return; // Silent validation
+                }
+                
+                const deliveryCharges = inputs.deliveryRate * inputs.numDeliveries;
+                const fixedCosts = CONFIG.FITTING_COSTS + CONFIG.FIXED_OVERHEADS + deliveryCharges + inputs.adHocCosts;
+                
+                // Calculate product cost
+                const originalSellingPriceExVAT = inputs.sellingPriceIncVAT / (1 + CONFIG.VAT_RATE);
+                const baseCost = originalSellingPriceExVAT * ((100 - inputs.margin) / 100);
+                const supplierDiscountAmount = baseCost * (inputs.supplierDiscountPercent / 100);
+                const productCost = baseCost - supplierDiscountAmount;
+                
+                // Calculate profits for current scenario (with customer discount)
+                const customerPaysExVAT = finalSellingPriceIncVAT / (1 + CONFIG.VAT_RATE);
+                const originalCommission = customerPaysExVAT * CONFIG.COMMISSION_RATE;
+                const originalGrossProfit = customerPaysExVAT - productCost - originalCommission;
+                const originalNetProfit = originalGrossProfit - fixedCosts;
+                
+                // Calculate what profit would be WITHOUT any customer discount (for profit reduction comparison)
+                const noDiscountCommission = originalSellingPriceExVAT * CONFIG.COMMISSION_RATE;
+                const noDiscountGrossProfit = originalSellingPriceExVAT - productCost - noDiscountCommission;
+                const noDiscountNetProfit = noDiscountGrossProfit - fixedCosts;
+                
+                // Break-even calculations
+                const breakEvenRevenue = (productCost + fixedCosts) / (1 - CONFIG.COMMISSION_RATE);
+                const maxDiscountExVAT = Math.max(0, originalSellingPriceExVAT - breakEvenRevenue);
+                const maxDiscountIncVAT = maxDiscountExVAT * (1 + CONFIG.VAT_RATE);
+                const maxDiscountPercent = (maxDiscountIncVAT / inputs.sellingPriceIncVAT) * 100;
+                
+                const breakEvenPriceIncVAT = inputs.sellingPriceIncVAT - maxDiscountIncVAT;
+                const breakEvenPriceExVAT = breakEvenPriceIncVAT / (1 + CONFIG.VAT_RATE);
+                const breakEvenCommission = breakEvenPriceExVAT * CONFIG.COMMISSION_RATE;
+                const breakEvenGrossProfit = breakEvenPriceExVAT - productCost - breakEvenCommission;
+                const breakEvenNetProfit = breakEvenGrossProfit - fixedCosts;
+                
+                // £100 profit calculations
+                const targetRevenue = (productCost + fixedCosts + CONFIG.TARGET_PROFIT) / (1 - CONFIG.COMMISSION_RATE);
+                const discount100ExVAT = Math.max(0, originalSellingPriceExVAT - targetRevenue);
+                const discount100IncVAT = discount100ExVAT * (1 + CONFIG.VAT_RATE);
+                const discount100Percent = (discount100IncVAT / inputs.sellingPriceIncVAT) * 100;
+                const price100IncVAT = inputs.sellingPriceIncVAT - discount100IncVAT;
+                
+                // Display values
+                const data = {
+                    ...inputs,
+                    customerDiscount,
+                    finalSellingPriceIncVAT,
+                    customerPaysExVAT,
+                    originalSellingPriceExVAT,
+                    productCost,
+                    originalCommission,
+                    originalGrossProfit,
+                    originalNetProfit,
+                    noDiscountNetProfit,
+                    deliveryCharges,
+                    fixedCosts,
+                    displayMaxDiscount: maxDiscountPercent, // Always show max discount regardless of current profit
+                    displayBreakEvenPrice: breakEvenPriceIncVAT, // Always show theoretical break-even price
+                    displayBreakEvenEx: breakEvenPriceExVAT,
+                    displayBreakEvenCommission: breakEvenCommission,
+                    displayBreakEvenGross: breakEvenGrossProfit,
+                    displayBreakEvenNet: breakEvenNetProfit,
+                    maxDiscountDisplay: maxDiscountIncVAT, // Always show max discount amount
+                    maxDiscountPercentDisplay: maxDiscountPercent,
+                    discount100IncVAT,
+                    discount100Percent,
+                    price100IncVAT,
+                    sellingPriceIncVAT: inputs.sellingPriceIncVAT
+                };
+                
+                updateDisplay(data);
+                elements.results.style.display = 'block';
+                
+            } catch (error) {
+                console.error('Calculation error:', error);
+            }
+        }
 
-        // Auto-calculate when inputs change
-        document.addEventListener('DOMContentLoaded', function() {
-            const sellingPriceEl = document.getElementById('sellingPrice');
-            const blindTypeEl = document.getElementById('blindType');
-            const customerDiscountEl = document.getElementById('customerDiscount');
-            const supplierDiscountEl = document.getElementById('supplierDiscount');
-            const numDeliveriesEl = document.getElementById('numDeliveries');
-            const adHocCostsEl = document.getElementById('adHocCosts');
-            
-            if (sellingPriceEl) sellingPriceEl.addEventListener('input', calculate);
-            if (blindTypeEl) blindTypeEl.addEventListener('change', calculate);
-            if (customerDiscountEl) customerDiscountEl.addEventListener('input', calculate);
-            if (supplierDiscountEl) supplierDiscountEl.addEventListener('input', calculate);
-            if (numDeliveriesEl) numDeliveriesEl.addEventListener('input', calculate);
-            if (adHocCostsEl) adHocCostsEl.addEventListener('input', calculate);
-            
-            document.querySelectorAll('input[name="discountType"]').forEach(radio => {
-                radio.addEventListener('change', calculate);
-            });
-            
-            document.querySelectorAll('input[name="deliveryType"]').forEach(radio => {
-                radio.addEventListener('change', calculate);
-            });
-        });
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
