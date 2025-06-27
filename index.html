@@ -28,6 +28,18 @@
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
         }
         
+        .logo-section {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px 0;
+        }
+        
+        .company-logo {
+            max-height: 80px;
+            width: auto;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+        
         h1 {
             text-align: center;
             color: #2c3e50;
@@ -453,6 +465,10 @@
                 font-size: 1.8em;
             }
             
+            .company-logo {
+                max-height: 60px;
+            }
+            
             .subtitle {
                 font-size: 1em;
                 margin-bottom: 25px;
@@ -462,6 +478,10 @@
 </head>
 <body>
     <div class="container">
+        <div class="logo-section">
+            <img src="logo.png" alt="New Home Blinds" class="company-logo">
+        </div>
+        
         <h1>Profitability Calculator - Management</h1>
         <p class="subtitle">This shows the expected profitability on a particular order, break-even point and the maximum discount allowable.</p>
         
