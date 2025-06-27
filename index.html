@@ -53,11 +53,51 @@
             margin-bottom: 25px;
         }
         
+        .input-section {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .input-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-icon {
+            width: 24px;
+            height: 24px;
+            background: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
         .input-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .input-grid.single-column {
+            grid-template-columns: 1fr;
         }
         
         .input-group {
@@ -322,12 +362,13 @@
             }
             
             .scenarios-grid {
-                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
                 gap: 12px;
             }
             
             .input-grid {
                 grid-template-columns: 1fr;
+                gap: 15px;
             }
             
             .container {
@@ -335,8 +376,86 @@
                 padding: 20px;
             }
             
+            .calculator-section {
+                padding: 20px;
+            }
+            
+            .input-section {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .section-title {
+                font-size: 1.1em;
+                margin-bottom: 15px;
+            }
+            
             h1 {
                 font-size: 2em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                margin: 5px;
+                padding: 15px;
+            }
+            
+            .calculator-section {
+                padding: 15px;
+            }
+            
+            .input-section {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .section-title {
+                font-size: 1em;
+                margin-bottom: 12px;
+            }
+            
+            .input-grid {
+                gap: 12px;
+            }
+            
+            select, input {
+                padding: 12px 15px;
+                font-size: 16px;
+            }
+            
+            .radio-group {
+                gap: 15px;
+            }
+            
+            .radio-group.vertical {
+                gap: 6px;
+            }
+            
+            .scenarios-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 10px;
+            }
+            
+            .scenario-card {
+                padding: 10px;
+            }
+            
+            .scenario-discount {
+                font-size: 1.2em;
+            }
+            
+            .scenario-profit {
+                font-size: 1em;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .subtitle {
+                font-size: 1em;
+                margin-bottom: 25px;
             }
         }
     </style>
@@ -344,68 +463,93 @@
 <body>
     <div class="container">
         <h1>Profitability Calculator - Management</h1>
-        <p class="subtitle">This shows the expected profitability on a particular order, break-even point and the maximum discount allowable. It assumes we are doing approx. 30 orders per month.</p>
+        <p class="subtitle">This shows the expected profitability on a particular order, break-even point and the maximum discount allowable.</p>
         
         <div class="calculator-section">
-            <div class="input-grid">
-                <div class="input-group">
-                    <label for="blindType">Blind Type</label>
-                    <select id="blindType">
-                        <!-- Options will be populated by JavaScript -->
-                    </select>
+            <!-- Order Details Section -->
+            <div class="input-section">
+                <div class="section-title">
+                    <div class="section-icon">1</div>
+                    Order Details
                 </div>
-                
-                <div class="input-group">
-                    <label for="sellingPrice">Selling Price (Inc VAT) (£)</label>
-                    <input type="number" id="sellingPrice" placeholder="e.g., 1500" step="0.01" min="0">
-                </div>
-                
-                <div class="input-group">
-                    <label for="customerDiscount">Customer Discount (if applicable)</label>
-                    <input type="number" id="customerDiscount" placeholder="e.g., 50 or 150" step="0.01" min="0">
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="percentage" name="discountType" value="percentage" checked>
-                            <label for="percentage">Percentage (%)</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="monetary" name="discountType" value="monetary">
-                            <label for="monetary">Monetary (£)</label>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="blindType">Blind Type</label>
+                        <select id="blindType">
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="sellingPrice">Selling Price (Inc VAT) (£)</label>
+                        <input type="number" id="sellingPrice" placeholder="e.g., 1500" step="0.01" min="0">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="customerDiscount">Customer Discount (if applicable)</label>
+                        <input type="number" id="customerDiscount" placeholder="e.g., 50 or 150" step="0.01" min="0">
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="percentage" name="discountType" value="percentage" checked>
+                                <label for="percentage">Percentage (%)</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="monetary" name="discountType" value="monetary">
+                                <label for="monetary">Monetary (£)</label>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
-                <div class="input-group">
-                    <label for="supplierDiscount">Supplier Discount (%)</label>
-                    <input type="number" id="supplierDiscount" placeholder="e.g., 20" step="0.1" min="0" max="100">
+            </div>
+            
+            <!-- Supplier Details Section -->
+            <div class="input-section">
+                <div class="section-title">
+                    <div class="section-icon">2</div>
+                    Supplier Details
                 </div>
-                
-                <div class="input-group">
-                    <label>Delivery Options</label>
-                    <div class="radio-group vertical">
-                        <div class="radio-option">
-                            <input type="radio" id="standard" name="deliveryType" value="0" checked>
-                            <label for="standard">Standard (Free)</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="threeDay" name="deliveryType" value="8.95">
-                            <label for="threeDay">3 Day Despatch (£8.95 ex VAT)</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="nextDay" name="deliveryType" value="14.95">
-                            <label for="nextDay">Next Day Despatch (£14.95 ex VAT)</label>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="supplierDiscount">Supplier Discount (%)</label>
+                        <input type="number" id="supplierDiscount" placeholder="e.g., 20" step="0.1" min="0" max="100">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Delivery Options</label>
+                        <div class="radio-group vertical">
+                            <div class="radio-option">
+                                <input type="radio" id="standard" name="deliveryType" value="0" checked>
+                                <label for="standard">Standard (Free)</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="threeDay" name="deliveryType" value="8.95">
+                                <label for="threeDay">3 Day Despatch (£8.95 ex VAT)</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="nextDay" name="deliveryType" value="14.95">
+                                <label for="nextDay">Next Day Despatch (£14.95 ex VAT)</label>
+                            </div>
                         </div>
                     </div>
+                    
+                    <div class="input-group">
+                        <label for="numDeliveries">No. of Deliveries</label>
+                        <input type="number" id="numDeliveries" placeholder="1" value="1" step="1" min="1">
+                    </div>
                 </div>
-                
-                <div class="input-group">
-                    <label for="numDeliveries">No. of Deliveries</label>
-                    <input type="number" id="numDeliveries" placeholder="1" value="1" step="1" min="1">
+            </div>
+            
+            <!-- Other Section -->
+            <div class="input-section">
+                <div class="section-title">
+                    <div class="section-icon">3</div>
+                    Other
                 </div>
-                
-                <div class="input-group">
-                    <label for="adHocCosts">Additional Ad Hoc Costs ex VAT (£)</label>
-                    <input type="number" id="adHocCosts" placeholder="e.g., 350" step="0.01" min="0">
+                <div class="input-grid single-column">
+                    <div class="input-group">
+                        <label for="adHocCosts">Additional Ad Hoc Costs ex VAT (£)</label>
+                        <input type="number" id="adHocCosts" placeholder="e.g., 350" step="0.01" min="0">
+                    </div>
                 </div>
             </div>
             
